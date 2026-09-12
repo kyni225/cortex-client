@@ -1,6 +1,7 @@
 import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { Platform, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 import { colors } from '@/constants/theme';
@@ -26,7 +27,7 @@ export default function RootLayout() {
     SplashScreen.hideAsync();
   }, []);
 
-  return (
+  const contenu = (
     <ThemeProvider value={appTheme}>
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
@@ -58,5 +59,15 @@ export default function RootLayout() {
         <Stack.Screen name="choix-offre" options={{ presentation: 'card' }} />
       </Stack>
     </ThemeProvider>
+  );
+
+  if (Platform.OS !== 'web') return contenu;
+
+  // Sur navigateur, on contraint la largeur à celle d'un téléphone plutôt
+  // que d'étirer les écrans sur toute la fenêtre.
+  return (
+    <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#e5e5e5', overflow: 'hidden' }}>
+      <View style={{ flex: 1, width: '100%', maxWidth: 430, overflow: 'hidden' }}>{contenu}</View>
+    </View>
   );
 }

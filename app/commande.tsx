@@ -18,6 +18,7 @@ export default function CommandeScreen() {
   const params = useLocalSearchParams<{ adresse?: string; offreId?: string; telephone?: string }>();
   const client = useAppStore((s) => s.client);
   const creerDemandeInstallation = useAppStore((s) => s.creerDemandeInstallation);
+  const mettreAJourClient = useAppStore((s) => s.mettreAJourClient);
   const demandeEnCours = useAppStore((s) => s.demandeEnCours);
 
   const adresse: Adresse = useMemo(() => {
@@ -33,15 +34,17 @@ export default function CommandeScreen() {
 
   const offre = useMemo(() => offres.find((o) => o.id === params.offreId) ?? offres[0], [params.offreId]);
 
-  const [telephone, setTelephone] = useState((params.telephone as string) || client.telephone);
-  const [nom, setNom] = useState(client.nom);
-  const [prenom, setPrenom] = useState(client.prenom);
+  const [telephone, setTelephone] = useState((params.telephone as string) || '');
+  const [nom, setNom] = useState('');
+  const [prenom, setPrenom] = useState('');
+  const [email, setEmail] = useState('');
 
-  const formValide = telephone.trim() && nom.trim() && prenom.trim();
+  const formValide = telephone.trim() && nom.trim() && prenom.trim() && email.trim().includes('@');
 
   async function onConfirmer() {
     if (!formValide) return;
-    await creerDemandeInstallation({ adresse, offre, telephone });
+    mettreAJourClient({ nom, prenom, telephone, email, adresse });
+    await creerDemandeInstallation({ adresse, offre, telephone, email });
     router.replace('/demande-confirmation');
   }
 
@@ -69,27 +72,36 @@ export default function CommandeScreen() {
           <View style={styles.addressRow}>
             <Ionicons name="location-outline" size={16} color={colors.muted} />
             <Text style={styles.addressText} numberOfLines={2}>
-              {adresse.numero} {adresse.rue}, {adresse.codePostal} {adresse.ville}
+              {adresse.rue}, {adresse.codePostal} {adresse.ville}
             </Text>
           </View>
 
           <Text style={[typography.bodyBold as any, styles.sectionSpacing]}>Vos coordonnées</Text>
+          <View style={styles.rowFields}>
+            <View style={{ flex: 1, marginRight: spacing.sm }}>
+              <TextField label="Nom" value={nom} onChangeText={setNom} placeholder={client.nom} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <TextField label="Prénom" value={prenom} onChangeText={setPrenom} placeholder={client.prenom} />
+            </View>
+          </View>
           <TextField
             label="Numéro de téléphone"
             value={telephone}
             onChangeText={setTelephone}
-            placeholder="+225 07 XX XX XX XX"
+            placeholder={client.telephone}
             keyboardType="phone-pad"
             icon="call-outline"
           />
-          <View style={styles.rowFields}>
-            <View style={{ flex: 1, marginRight: spacing.sm }}>
-              <TextField label="Prénom" value={prenom} onChangeText={setPrenom} placeholder="Prénom" />
-            </View>
-            <View style={{ flex: 1 }}>
-              <TextField label="Nom" value={nom} onChangeText={setNom} placeholder="Nom" />
-            </View>
-          </View>
+          <TextField
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            placeholder={client.email}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            icon="mail-outline"
+          />
 
           <View style={{ marginTop: spacing.lg }}>
             <Button

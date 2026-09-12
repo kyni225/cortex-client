@@ -62,7 +62,7 @@ export default function EligibiliteScreen() {
   const verifierEligibilite = useAppStore((s) => s.verifierEligibilite);
   const reinitialiserEligibilite = useAppStore((s) => s.reinitialiserEligibilite);
 
-  const [adresse, setAdresse] = useState<Adresse>(client.adresse);
+  const [adresse, setAdresse] = useState<Adresse>({ ...client.adresse, numero: '', rue: '' });
   const [modeManuel, setModeManuel] = useState(false);
   const [villeOuvert, setVilleOuvert] = useState(false);
   const [codeBox, setCodeBox] = useState('');
@@ -147,8 +147,8 @@ export default function EligibiliteScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const adresseTexte = `${adresse.numero} ${adresse.rue}, ${adresse.ville}`;
-  const formValide = !!(adresse.numero.trim() && adresse.rue.trim() && adresse.ville.trim());
+  const adresseTexte = adresse.rue ? `${adresse.rue}, ${adresse.ville}` : adresse.ville;
+  const formValide = !!(adresse.rue.trim() && adresse.ville.trim());
 
   async function onVerifier() {
     if (!formValide) return;
@@ -225,25 +225,12 @@ export default function EligibiliteScreen() {
                   </Pressable>
                 ) : (
                   <>
-                    <View style={styles.rowFields}>
-                      <View style={{ flex: 1, marginRight: spacing.sm }}>
-                        <TextField
-                          label="N°"
-                          value={adresse.numero}
-                          onChangeText={(v) => setAdresse((a) => ({ ...a, numero: v }))}
-                          placeholder="12"
-                          keyboardType="number-pad"
-                        />
-                      </View>
-                      <View style={{ flex: 3 }}>
-                        <TextField
-                          label="Rue / quartier"
-                          value={adresse.rue}
-                          onChangeText={(v) => setAdresse((a) => ({ ...a, rue: v }))}
-                          placeholder="Riviera, Rue K70…"
-                        />
-                      </View>
-                    </View>
+                    <TextField
+                      label="Rue / quartier"
+                      value={adresse.rue}
+                      onChangeText={(v) => setAdresse((a) => ({ ...a, rue: v }))}
+                      placeholder="Ex : Riviera 2, Cocody"
+                    />
 
                     <Text style={styles.villeLabel}>Commune</Text>
                     <Pressable style={styles.select} onPress={() => setVilleOuvert((v) => !v)}>
@@ -324,7 +311,7 @@ export default function EligibiliteScreen() {
                   <View style={{ flex: 1 }}>
                     <Text style={styles.addressCardLabel}>ADRESSE TESTÉE</Text>
                     <Text style={typography.bodyBold as any}>
-                      {eligibiliteResult.adresse.numero} {eligibiliteResult.adresse.rue}, {eligibiliteResult.adresse.ville}
+                      {eligibiliteResult.adresse.rue}, {eligibiliteResult.adresse.ville}
                     </Text>
                   </View>
                   <Pressable onPress={recommencer}>
@@ -431,7 +418,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   intro: { marginBottom: spacing.lg },
-  rowFields: { flexDirection: 'row' },
   villeLabel: { ...(typography.bodyBold as any), marginBottom: spacing.xs + 2 },
   select: {
     flexDirection: 'row',

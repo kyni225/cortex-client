@@ -1,4 +1,3 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ImageBackground, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -24,15 +23,8 @@ export default function WelcomeScreen() {
   }
 
   return (
-    <View style={styles.flex}>
-      <ImageBackground source={require('../assets/images/welcome-bg.jpg')} style={styles.bgImage} resizeMode="cover">
-        <LinearGradient
-          colors={['rgba(20,23,26,0.55)', 'rgba(214,95,0,0.55)', colors.primary]}
-          start={{ x: 0.1, y: 0 }}
-          end={{ x: 0.9, y: 1 }}
-          style={StyleSheet.absoluteFill}
-        />
-      </ImageBackground>
+    <View style={styles.container}>
+      <ImageBackground source={require('../assets/images/accueil.png')} style={styles.bgImage} resizeMode="cover" />
 
       <SafeAreaView style={styles.flex}>
         <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -82,7 +74,8 @@ export default function WelcomeScreen() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  bgImage: { ...StyleSheet.absoluteFill },
+  container: { flex: 1, overflow: 'hidden', backgroundColor: colors.primary },
+  bgImage: { position: 'absolute', top: spacing.xxl * 2, left: 0, right: 0, width: '100%', aspectRatio: 1122 / 1402 },
   top: { flex: 1, minHeight: 90 },
   card: {
     backgroundColor: colors.surface,

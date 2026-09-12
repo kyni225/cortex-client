@@ -57,7 +57,7 @@ export default function ProfilScreen() {
         <Card padded={false}>
           <MenuRow icon="person" label="Nom" value={`${client.prenom} ${client.nom}`} />
           <View style={styles.divider} />
-          <MenuRow icon="call" label="Numéro" value={`${client.telephone}  ✓`} />
+          <MenuRow icon="call" label="Numéro" value={client.telephone} />
           <View style={styles.divider} />
           <MenuRow icon="hardware-chip" label="Code de la box" value={codeBox} />
           <View style={styles.divider} />
@@ -95,7 +95,16 @@ export default function ProfilScreen() {
             icon="trash-outline"
             label="Supprimer le compte"
             danger
-            onPress={() => Alert.alert('Supprimer le compte', 'Cette action est irréversible (démo).')}
+            onPress={() =>
+              Alert.alert(
+                'Supprimer le compte',
+                'Cette action est irréversible et supprimera définitivement votre compte. Confirmez-vous ?',
+                [
+                  { text: 'Annuler', style: 'cancel' },
+                  { text: 'Supprimer', style: 'destructive', onPress: () => router.replace('/') },
+                ]
+              )
+            }
           />
           <View style={styles.divider} />
           <MenuRow

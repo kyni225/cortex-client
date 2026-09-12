@@ -57,6 +57,7 @@ interface DemandeInstallationParams {
   adresse: Adresse;
   offre: Offre;
   telephone: string;
+  email: string;
 }
 
 interface AppState {
@@ -81,6 +82,9 @@ interface AppState {
 
   creerDemandeInstallation: (params: DemandeInstallationParams) => Promise<Dossier>;
   dossierParId: (id: string) => Dossier | undefined;
+
+  /** Met à jour l'identité du client (ex: coordonnées saisies lors d'une commande). */
+  mettreAJourClient: (updates: Partial<Client>) => void;
 
   envoyerMessageTechnicien: (texte: string) => void;
   signalerTechnicienAbsent: () => void;
@@ -142,6 +146,10 @@ export const useAppStore = create<AppState>((set, get) => ({
   reinitialiserEligibilite: () => set({ eligibiliteResult: null }),
 
   dossierParId: (id) => get().dossiers.find((d) => d.id === id),
+
+  mettreAJourClient: (updates) => {
+    set((state) => ({ client: { ...state.client, ...updates } }));
+  },
 
   creerDemandeInstallation: async ({ adresse, offre }) => {
     set({ demandeEnCours: true });
