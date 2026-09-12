@@ -1,55 +1,61 @@
-import { useFonts } from 'expo-font';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { StatusBar } from 'expo-status-bar';
 
-import { useColorScheme } from '@/components/useColorScheme';
+import { colors } from '@/constants/theme';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+const appTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: colors.primary,
+    background: colors.background,
+    card: colors.surface,
+    text: colors.ink,
+    border: colors.border,
+  },
+};
+
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+    SplashScreen.hideAsync();
+  }, []);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+    <ThemeProvider value={appTheme}>
+      <StatusBar style="dark" />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
+        <Stack.Screen name="index" options={{ animation: 'fade' }} />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="cortex" options={{ presentation: 'card' }} />
+        <Stack.Screen name="eligibilite" options={{ presentation: 'card' }} />
+        <Stack.Screen name="commande" options={{ presentation: 'card' }} />
+        <Stack.Screen name="demande-confirmation" options={{ presentation: 'card', gestureEnabled: false }} />
+        <Stack.Screen name="technicien/[id]" options={{ presentation: 'card' }} />
+        <Stack.Screen name="chat/[id]" options={{ presentation: 'card' }} />
+        <Stack.Screen name="signalement-absence" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="signalement-probleme" options={{ presentation: 'card' }} />
+        <Stack.Screen name="intervention-confirmation" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="reclamation" options={{ presentation: 'card' }} />
+        <Stack.Screen name="reclamation-confirmation" options={{ presentation: 'card', gestureEnabled: false }} />
+        <Stack.Screen name="reclamations" options={{ presentation: 'card' }} />
+        <Stack.Screen name="reclamation/[id]" options={{ presentation: 'card' }} />
+        <Stack.Screen name="dossier/[id]" options={{ presentation: 'card' }} />
+        <Stack.Screen name="notifications" options={{ presentation: 'card' }} />
+        <Stack.Screen name="diagnostic" options={{ presentation: 'card' }} />
+        <Stack.Screen name="gerer-wifi" options={{ presentation: 'card' }} />
+        <Stack.Screen name="recharge" options={{ presentation: 'card' }} />
+        <Stack.Screen name="mes-demandes" options={{ presentation: 'card' }} />
+        <Stack.Screen name="changement-offre" options={{ presentation: 'card' }} />
+        <Stack.Screen name="demenagement" options={{ presentation: 'card' }} />
+        <Stack.Screen name="demenagement-nouvelle-demande" options={{ presentation: 'card' }} />
+        <Stack.Screen name="demande-installation" options={{ presentation: 'card' }} />
+        <Stack.Screen name="choix-offre" options={{ presentation: 'card' }} />
       </Stack>
     </ThemeProvider>
   );
