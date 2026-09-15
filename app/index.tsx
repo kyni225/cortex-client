@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ImageBackground, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/ui/Button';
@@ -60,11 +60,14 @@ export default function WelcomeScreen() {
               onPress={onContinuer}
             />
 
-            <Pressable style={styles.linkWrap} onPress={() => router.push('/eligibilite')}>
-              <Text style={styles.link}>
-                Pas encore client Fibre ? <Text style={styles.linkBold}>Tester mon éligibilité</Text>
-              </Text>
-            </Pressable>
+            <Text style={styles.linkIntro}>Pas encore client Fibre ?</Text>
+            <View style={{ marginTop: spacing.sm }}>
+              <Button
+                label="Tester mon éligibilité"
+                variant="secondary"
+                onPress={() => router.push('/eligibilite')}
+              />
+            </View>
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -86,8 +89,6 @@ const styles = StyleSheet.create({
   },
   title: { textAlign: 'center' },
   subtitle: { textAlign: 'center', marginTop: spacing.sm },
-  linkWrap: { alignItems: 'center', marginTop: spacing.md, marginBottom: spacing.xs },
-  link: { fontSize: 13, color: colors.slate },
-  linkBold: { color: colors.primaryDark, fontWeight: '700' },
+  linkIntro: { textAlign: 'center', fontSize: 13, color: colors.slate, marginTop: spacing.lg },
   hint: { fontSize: 12, color: colors.muted, marginTop: -spacing.xs, marginBottom: spacing.xs },
 });
