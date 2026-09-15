@@ -8,11 +8,12 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { colors, radius, spacing, typography } from '@/constants/theme';
-import { numeroLigneFixe, optionsRecharge } from '@/data/mockData';
+import { optionsRecharge } from '@/data/mockData';
 import { useAppStore } from '@/store/useAppStore';
 
 export default function RechargeScreen() {
   const router = useRouter();
+  const client = useAppStore((s) => s.client);
   const dossier = useAppStore((s) => s.dossier);
   const effectuerRecharge = useAppStore((s) => s.effectuerRecharge);
   const rechargeEnCours = useAppStore((s) => s.rechargeEnCours);
@@ -33,7 +34,7 @@ export default function RechargeScreen() {
       <ScrollView contentContainerStyle={styles.scroll}>
         <Card style={styles.ligneCard}>
           <Text style={styles.ligneLabel}>LIGNE SÉLECTIONNÉE</Text>
-          <Text style={typography.h3 as any}>{numeroLigneFixe}</Text>
+          <Text style={typography.h3 as any}>{client.telephone}</Text>
           <Text style={typography.caption as any}>{dossier?.offre?.nom} {dossier?.offre?.debit}</Text>
         </Card>
 

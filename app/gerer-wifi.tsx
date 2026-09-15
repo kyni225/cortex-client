@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import QRCode from 'react-native-qrcode-svg';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -9,10 +10,16 @@ import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAppStore } from '@/store/useAppStore';
 
+function echapperWifi(valeur: string) {
+  return valeur.replace(/([\\;,:"])/g, '\\$1');
+}
+
 export default function GererWifiScreen() {
   const wifi = useAppStore((s) => s.wifi);
   const toggleAppareilWifi = useAppStore((s) => s.toggleAppareilWifi);
   const [motDePasseVisible, setMotDePasseVisible] = useState(false);
+
+  const valeurQrWifi = `WIFI:T:WPA;S:${echapperWifi(wifi.nomReseau)};P:${echapperWifi(wifi.motDePasse)};;`;
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -65,7 +72,7 @@ export default function GererWifiScreen() {
         <Card style={styles.card}>
           <Text style={typography.bodyBold as any}>Partager mon WiFi</Text>
           <View style={styles.qrWrap}>
-            <Ionicons name="qr-code-outline" size={90} color={colors.ink} />
+            <QRCode value={valeurQrWifi} size={140} color={colors.ink} backgroundColor={colors.white} />
           </View>
           <Text style={[typography.caption as any, styles.qrCaption]}>
             Faites scanner ce code pour connecter un invité sans saisir le mot de passe.

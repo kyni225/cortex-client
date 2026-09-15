@@ -80,6 +80,12 @@ export default function ProfilScreen() {
             label="Contacter le service client"
             onPress={() => Alert.alert('Service client', '3900 (appel gratuit depuis une ligne Orange)')}
           />
+          <View style={styles.divider} />
+          <MenuRow
+            icon="time-outline"
+            label="Historique des signalements"
+            onPress={() => router.push('/reclamations')}
+          />
         </Card>
 
         <Text style={styles.sectionTitle}>Gestion du compte</Text>

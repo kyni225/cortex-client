@@ -10,7 +10,6 @@ import { InfoBanner } from '@/components/ui/InfoBanner';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { TextField } from '@/components/ui/TextField';
 import { colors, spacing, typography } from '@/constants/theme';
-import { numeroLigneFixe } from '@/data/mockData';
 import { useAppStore } from '@/store/useAppStore';
 
 export default function DemenagementNouvelleDemandeScreen() {
@@ -35,7 +34,7 @@ export default function DemenagementNouvelleDemandeScreen() {
               <Ionicons name="wifi-outline" size={18} color={colors.primaryDark} />
               <View style={{ marginLeft: spacing.sm }}>
                 <Text style={styles.rowLabel}>Ligne à transférer</Text>
-                <Text style={styles.rowValue}>{numeroLigneFixe}</Text>
+                <Text style={styles.rowValue}>{client.telephone}</Text>
               </View>
             </View>
           </Card>

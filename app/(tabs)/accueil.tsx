@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { InfoBanner } from '@/components/ui/InfoBanner';
 import { colors, radius, spacing, typography } from '@/constants/theme';
-import { numeroLigneFixe } from '@/data/mockData';
 import { useAppStore } from '@/store/useAppStore';
 
 export default function AccueilScreen() {
@@ -36,7 +35,7 @@ export default function AccueilScreen() {
           <View style={styles.boxHeaderRow}>
             <View>
               <Text style={styles.numeroLabel}>Mon numéro fixe</Text>
-              <Text style={styles.numeroValue}>{numeroLigneFixe}</Text>
+              <Text style={styles.numeroValue}>{client.telephone}</Text>
             </View>
             <Badge label={wifi.actif ? 'Actif' : 'Inactif'} tone={wifi.actif ? 'success' : 'danger'} />
           </View>

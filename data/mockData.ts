@@ -101,9 +101,6 @@ export const zonesCouverture: ZoneCouverture[] = [
   { id: 'z-portbouet', nom: 'Port-Bouët', statut: 'non_eligible', contour: rect(5.238, 5.262, -3.960, -3.918) },
 ];
 
-// Numéro de ligne fixe rattaché à la box fibre du client (distinct de son mobile).
-export const numeroLigneFixe = '27 225 792 91';
-
 // Code d'identification de la box (utile pour le support technique).
 export const codeBox = 'BOX-CI-77492';
 
